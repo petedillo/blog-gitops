@@ -1,0 +1,12 @@
+# Never commit unsealed secrets!
+*-secret.yaml
+!sealed-*.yaml
+
+# Temp files
+*.tmp
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.swp

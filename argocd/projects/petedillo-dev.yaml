@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: petedillo-dev
+  namespace: argocd
+spec:
+  description: PeteDillo Blog - Development Environment
+  
+  sourceRepos:
+  - https://github.com/[username]/blog-infra
+  
+  destinations:
+  - namespace: dev
+    server: https://kubernetes.default.svc
+  
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  
+  namespaceResourceWhitelist:
+  - group: '*'
+    kind: '*'
