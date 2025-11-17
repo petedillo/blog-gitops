@@ -1,23 +1,20 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-bases:
-  - ../../base/blog-ui
-  - ../../base/blog-api
-  - ../../base/postgres
 
 namespace: dev
-namePrefix: dev-
 
-patches:
-  - path: blog-ui-patch.yaml
-    target:
-      kind: Deployment
-      name: blog-ui
-  - path: blog-api-patch.yaml
-    target:
-      kind: Deployment
-      name: blog-api
-  - path: postgres-patch.yaml
-    target:
-      kind: StatefulSet
-      name: postgres
+resources:
+- namespace.yaml
+- ../../base/postgres/configmap.yaml
+- ../../base/postgres/pvc.yaml
+- ../../base/postgres/deployment.yaml
+- ../../base/postgres/service.yaml
+- ../../base/blog-api/deployment.yaml
+- ../../base/blog-api/service.yaml
+- ../../base/blog-api/ingress.yaml
+- ../../base/blog-ui/deployment.yaml
+- ../../base/blog-ui/service.yaml
+- ../../base/blog-ui/ingress.yaml
+
+commonLabels:
+  environment: dev

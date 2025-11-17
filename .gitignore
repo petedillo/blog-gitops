@@ -1,12 +1,20 @@
-# Never commit unsealed secrets!
-*-secret.yaml
-!sealed-*.yaml
-
-# Temp files
+# Temporary files
 *.tmp
+*.swp
+*~
+
+# Unsealed secrets (never commit!)
+*-unsealed.yaml
+*.secret
+
+# macOS
 .DS_Store
 
 # IDE
 .idea/
 .vscode/
-*.swp
+*.iml
+
+# Kubernetes temporary files
+*.old
+*.bak

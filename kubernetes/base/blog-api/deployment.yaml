@@ -2,11 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: blog-api
+  namespace: dev
   labels:
     app: blog-api
-    component: backend
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: blog-api
@@ -15,55 +15,55 @@ spec:
       labels:
         app: blog-api
     spec:
+      imagePullSecrets:
+      - name: nexus-registry
       containers:
       - name: blog-api
-        image: ghcr.io/[username]/blog-api:develop
+        image: docker.toastedbytes.com/blog-api:develop-latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
           name: http
         env:
         - name: SPRING_PROFILES_ACTIVE
-          value: "dev"
-        - name: DATABASE_URL
+          value: "prod"
+        - name: SPRING_DATASOURCE_URL
           value: "jdbc:postgresql://postgres:5432/petedillo_blog"
-        - name: DATABASE_USERNAME
+        - name: SPRING_DATASOURCE_USERNAME
+          value: "petedillo"
+        - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: postgres-secret
-              key: username
-        - name: DATABASE_PASSWORD
+              name: postgres-credentials
+              key: password
+        - name: SPRING_DATASOURCE_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: postgres-secret
+              name: postgres-credentials
               key: password
         - name: JWT_SECRET
           valueFrom:
             secretKeyRef:
               name: jwt-secret
               key: secret
-        volumeMounts:
-        - name: media-storage
-          mountPath: /app/media
         resources:
           requests:
             memory: "512Mi"
             cpu: "250m"
           limits:
             memory: "1Gi"
-            cpu: "500m"
+            cpu: "1000m"
         livenessProbe:
           httpGet:
             path: /actuator/health
             port: 8080
           initialDelaySeconds: 60
           periodSeconds: 10
+          timeoutSeconds: 5
         readinessProbe:
           httpGet:
-            path: /actuator/health/readiness
+            path: /actuator/health
             port: 8080
           initialDelaySeconds: 30
           periodSeconds: 5
-      volumes:
-      - name: media-storage
-        persistentVolumeClaim:
-          claimName: media-pvc
+          timeoutSeconds: 3

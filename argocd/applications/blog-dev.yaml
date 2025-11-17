@@ -1,25 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: blog-ui-dev
+  name: blog-dev
   namespace: argocd
 spec:
   project: petedillo-dev
-  
+
   source:
-    repoURL: https://github.com/[username]/blog-infra
-    targetRevision: main
+    repoURL: https://github.com/petedillo/blog-gitops
+    targetRevision: HEAD
     path: kubernetes/overlays/dev
-    kustomize:
-      images:
-      - name: blog-ui
-        newName: ghcr.io/[username]/blog-ui
-        newTag: develop
-  
+
   destination:
     server: https://kubernetes.default.svc
     namespace: dev
-  
+
   syncPolicy:
     automated:
       prune: true
@@ -33,3 +28,5 @@ spec:
         duration: 5s
         factor: 2
         maxDuration: 3m
+
+  revisionHistoryLimit: 10

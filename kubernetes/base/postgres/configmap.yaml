@@ -2,5 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: postgres-config
+  namespace: dev
 data:
-  POSTGRES_DB: petedillo_blog
+  POSTGRES_DB: "petedillo_blog"
+  POSTGRES_USER: "petedillo"

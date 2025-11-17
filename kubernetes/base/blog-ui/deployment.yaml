@@ -2,11 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: blog-ui
+  namespace: dev
   labels:
     app: blog-ui
-    component: frontend
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: blog-ui
@@ -15,31 +15,34 @@ spec:
       labels:
         app: blog-ui
     spec:
+      imagePullSecrets:
+      - name: nexus-registry
       containers:
       - name: blog-ui
-        image: ghcr.io/[username]/blog-ui:develop
+        image: docker.toastedbytes.com/blog-ui:develop-latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
           name: http
         env:
         - name: VITE_API_URL
-          value: "http://blog-api:8080"
+          value: "https://api.dev.petedillo.com"
         resources:
           requests:
             memory: "128Mi"
             cpu: "100m"
           limits:
             memory: "256Mi"
-            cpu: "200m"
+            cpu: "500m"
         livenessProbe:
           httpGet:
             path: /
             port: 80
-          initialDelaySeconds: 30
+          initialDelaySeconds: 10
           periodSeconds: 10
         readinessProbe:
           httpGet:
             path: /
             port: 80
-          initialDelaySeconds: 10
+          initialDelaySeconds: 5
           periodSeconds: 5

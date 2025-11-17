@@ -4,19 +4,24 @@ metadata:
   name: petedillo-dev
   namespace: argocd
 spec:
-  description: PeteDillo Blog - Development Environment
-  
+  description: PeteDillo.com development environment
+
   sourceRepos:
-  - https://github.com/[username]/blog-infra
-  
+  - 'https://github.com/petedillo/blog-gitops'
+
   destinations:
   - namespace: dev
     server: https://kubernetes.default.svc
-  
+  - namespace: argocd
+    server: https://kubernetes.default.svc
+
   clusterResourceWhitelist:
-  - group: '*'
-    kind: '*'
-  
+  - group: ''
+    kind: Namespace
+
   namespaceResourceWhitelist:
   - group: '*'
     kind: '*'
+
+  orphanedResources:
+    warn: true
