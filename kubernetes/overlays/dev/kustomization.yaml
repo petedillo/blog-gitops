@@ -5,16 +5,10 @@ namespace: dev
 
 resources:
 - namespace.yaml
-- ../../base/postgres/configmap.yaml
-- ../../base/postgres/pvc.yaml
-- ../../base/postgres/deployment.yaml
-- ../../base/postgres/service.yaml
-- ../../base/blog-api/deployment.yaml
-- ../../base/blog-api/service.yaml
-- ../../base/blog-api/ingress.yaml
-- ../../base/blog-ui/deployment.yaml
-- ../../base/blog-ui/service.yaml
-- ../../base/blog-ui/ingress.yaml
+- ../../base/postgres
+- ../../base/blog-api
+- ../../base/blog-ui
 
-commonLabels:
-  environment: dev
+labels:
+- pairs:
+    environment: dev
