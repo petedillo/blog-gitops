@@ -9,10 +9,10 @@ metadata:
 spec:
   ingressClassName: public
   rules:
-  - host: api-dev.petedillo.com
+  - host: dev.petedillo.com
     http:
       paths:
-      - path: /
+      - path: /api
         pathType: Prefix
         backend:
           service:

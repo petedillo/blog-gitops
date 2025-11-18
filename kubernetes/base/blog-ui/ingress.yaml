@@ -19,3 +19,5 @@ spec:
             name: blog-ui
             port:
               number: 80
+      # Note: API routes (/api/*) are handled by blog-api ingress
+      # NGINX ingress controller matches more specific paths first
