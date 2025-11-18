@@ -19,7 +19,7 @@ spec:
       - name: nexus-registry
       containers:
       - name: blog-api
-        image: docker.toastedbytes.com/blog-api:main-latest
+        image: docker.toastedbytes.com/blog-api:develop-latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
