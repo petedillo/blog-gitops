@@ -8,6 +8,7 @@ resources:
 - ../../base/postgres
 - ../../base/blog-api
 - ../../base/blog-ui
+- ../../base/monitoring
 
 labels:
 - pairs:
