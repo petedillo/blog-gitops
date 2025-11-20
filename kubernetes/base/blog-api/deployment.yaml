@@ -27,7 +27,7 @@ spec:
           name: http
         env:
         - name: SPRING_PROFILES_ACTIVE
-          value: "prod"
+          value: "develop"
         - name: SPRING_DATASOURCE_URL
           value: "jdbc:postgresql://postgres:5432/petedillo_blog"
         - name: SPRING_DATASOURCE_USERNAME
