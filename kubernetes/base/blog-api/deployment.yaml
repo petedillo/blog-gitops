@@ -18,6 +18,10 @@ spec:
     spec:
       imagePullSecrets:
       - name: nexus-registry
+      volumes:
+      - name: media-storage
+        persistentVolumeClaim:
+          claimName: blog-media-pvc
       containers:
       - name: blog-api
         image: docker.toastedbytes.com/blog-api:develop-latest
@@ -25,7 +29,15 @@ spec:
         ports:
         - containerPort: 8080
           name: http
+        volumeMounts:
+        - name: media-storage
+          mountPath: /app/media
+          subPathExpr: $(APP_ENVIRONMENT)
         env:
+        - name: APP_ENVIRONMENT
+          value: "dev"
+        - name: MEDIA_STORAGE_PATH
+          value: /app/media/images
         - name: SPRING_PROFILES_ACTIVE
           value: "develop"
         - name: SPRING_DATASOURCE_URL
