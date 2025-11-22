@@ -39,15 +39,6 @@ This repository uses **ArgoCD Image Updater** to automatically deploy new contai
 
 Image updater annotations are defined in `argocd/applications/blog-dev.yaml`:
 
-```yaml
-annotations:
-  argocd-image-updater.argoproj.io/image-list: blog-api=docker.toastedbytes.com/blog-api:develop-latest, blog-ui=docker.toastedbytes.com/blog-ui:develop-latest
-  argocd-image-updater.argoproj.io/blog-api.update-strategy: digest
-  argocd-image-updater.argoproj.io/blog-ui.update-strategy: digest
-  argocd-image-updater.argoproj.io/write-back-method: git
-  argocd-image-updater.argoproj.io/git-branch: main
-```
-
 ### Registry Configuration
 
 Private registry credentials are stored in `argocd/nexus-registry-creds` secret and configured in the Image Updater Helm values.
