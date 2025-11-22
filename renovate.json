@@ -1,16 +1,11 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended"],
+  "platform": "github",
+  "repositories": ["petedillo/blog-gitops"],
   "kubernetes": {
     "fileMatch": ["kubernetes/.+\\.yaml$"]
   },
-  "hostRules": [
-    {
-      "matchHost": "docker.toastedbytes.com",
-      "username": "{{ secrets.RENOVATE_DOCKER_USERNAME }}",
-      "password": "{{ secrets.RENOVATE_DOCKER_PASSWORD }}"
-    }
-  ],
   "packageRules": [
     {
       "description": "Auto-merge blog-api and blog-ui image updates",
