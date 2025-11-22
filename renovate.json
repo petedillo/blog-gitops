@@ -8,9 +8,10 @@
   },
   "packageRules": [
     {
-      "description": "Auto-merge blog-api and blog-ui image updates",
+      "description": "Track blog-api and blog-ui images by digest",
       "matchPackagePatterns": ["^docker.toastedbytes.com/blog-"],
-      "matchUpdateTypes": ["digest", "pin"],
+      "versioning": "loose",
+      "pinDigests": true,
       "automerge": true,
       "automergeType": "pr",
       "platformAutomerge": true
