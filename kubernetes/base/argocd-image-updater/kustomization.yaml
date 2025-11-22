@@ -2,6 +2,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - https://raw.githubusercontent.com/argoproj-labs/argocd-image-updater/stable/manifests/install.yaml
+  - github.com/argoproj-labs/argocd-image-updater/manifests?ref=stable
   - registry-secret.yaml
   - configmap.yaml
