@@ -1,0 +1,9 @@
+config:
+  registries:
+    - name: Nexus Docker Registry
+      prefix: docker.toastedbytes.com
+      api_url: https://docker.toastedbytes.com
+      credentials: secret:argocd/nexus-registry-creds#creds
+      default: true
+
+  logLevel: info
