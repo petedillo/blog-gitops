@@ -55,8 +55,6 @@ git commit -m "Add sealed secret for..."
 
 Applications are deployed via ArgoCD:
 - UI: https://argocd-dev.toastedbytes.com
-- User: admin
-- Namespace: argocd
 
 ## Environments
 
