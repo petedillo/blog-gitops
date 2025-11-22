@@ -6,50 +6,51 @@ This repository contains Kubernetes manifests and ArgoCD applications for the Pe
 
 ```
 argocd/
-├── projects/          # ArgoCD projects
-└── applications/      # ArgoCD applications
+├── projects/              # ArgoCD projects
+└── applications/          # ArgoCD applications
+    ├── blog-dev.yaml      # Blog dev environment
+    └── argocd-image-updater.yaml  # Image updater
 
 kubernetes/
-├── base/             # Base Kubernetes manifests
+├── base/                  # Base Kubernetes manifests
 │   ├── blog-api/
 │   ├── blog-ui/
-│   └── postgres/
-└── overlays/         # Environment-specific overlays
+│   ├── postgres/
+│   └── argocd-image-updater/  # Image updater config
+└── overlays/              # Environment-specific overlays
     ├── dev/
+    │   └── .argocd-source-blog-dev.yaml  # Auto-generated image overrides
     └── prod/
-
-sealed-secrets/       # Encrypted secrets (safe for Git)
-├── dev/
-└── prod/
 ```
 
-## Secrets Management
+## Automated Image Updates
 
-This repository uses Sealed Secrets for managing sensitive data:
+This repository uses **ArgoCD Image Updater** to automatically deploy new container images.
 
-1. **Never** commit plain Kubernetes secrets
-2. All secrets must be sealed using `kubeseal`
-3. Only `sealed-*.yaml` files should be committed
-4. The cluster's Sealed Secrets controller decrypts them at runtime
+### How It Works
 
-### Creating a Sealed Secret
+1. Push code to `blog-api` or `blog-ui` repository
+2. GitHub Actions builds and pushes Docker image with `develop-latest` tag
+3. ArgoCD Image Updater polls the registry every 2 minutes
+4. When a new image digest is detected, it commits to `.argocd-source-blog-dev.yaml`
+5. ArgoCD syncs the new image to the cluster
 
-```bash
-# Create secret locally (not committed)
-kubectl create secret generic my-secret \
-  --from-literal=key=value \
-  --dry-run=client -o yaml > /tmp/secret.yaml
+### Configuration
 
-# Seal it (safe to commit)
-kubeseal --format=yaml < /tmp/secret.yaml > sealed-secrets/dev/my-secret.yaml
+Image updater annotations are defined in `argocd/applications/blog-dev.yaml`:
 
-# Clean up
-rm /tmp/secret.yaml
-
-# Commit sealed secret
-git add sealed-secrets/dev/my-secret.yaml
-git commit -m "Add sealed secret for..."
+```yaml
+annotations:
+  argocd-image-updater.argoproj.io/image-list: blog-api=docker.toastedbytes.com/blog-api:develop-latest, blog-ui=docker.toastedbytes.com/blog-ui:develop-latest
+  argocd-image-updater.argoproj.io/blog-api.update-strategy: digest
+  argocd-image-updater.argoproj.io/blog-ui.update-strategy: digest
+  argocd-image-updater.argoproj.io/write-back-method: git
+  argocd-image-updater.argoproj.io/git-branch: main
 ```
+
+### Registry Configuration
+
+Private registry credentials are stored in `argocd/nexus-registry-creds` secret and configured in the Image Updater Helm values.
 
 ## Deployment
 
