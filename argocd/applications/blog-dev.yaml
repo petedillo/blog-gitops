@@ -3,6 +3,13 @@ kind: Application
 metadata:
   name: blog-dev
   namespace: argocd
+  annotations:
+    # ArgoCD Image Updater configuration
+    argocd-image-updater.argoproj.io/image-list: blog-api=docker.toastedbytes.com/blog-api:develop-latest, blog-ui=docker.toastedbytes.com/blog-ui:develop-latest
+    argocd-image-updater.argoproj.io/blog-api.update-strategy: digest
+    argocd-image-updater.argoproj.io/blog-ui.update-strategy: digest
+    argocd-image-updater.argoproj.io/write-back-method: git
+    argocd-image-updater.argoproj.io/git-branch: main
 spec:
   project: petedillo-dev
 
