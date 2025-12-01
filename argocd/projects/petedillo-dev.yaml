@@ -10,7 +10,7 @@ spec:
   - 'https://github.com/petedillo/blog-gitops'
 
   destinations:
-  - namespace: dev
+  - namespace: blog-dev
     server: https://kubernetes.default.svc
   - namespace: argocd
     server: https://kubernetes.default.svc
