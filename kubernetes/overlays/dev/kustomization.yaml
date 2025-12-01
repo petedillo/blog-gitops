@@ -10,8 +10,13 @@ resources:
 - ../../base/blog-ui
 - ../../base/monitoring
 
-patchesStrategicMerge:
-    - ingress-patch.yaml
+patches:
+    - path: ingress-patch.yaml
+        target:
+            group: networking.k8s.io
+            version: v1
+            kind: Ingress
+            name: blog-api
 
 labels:
 - pairs:
