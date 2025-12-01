@@ -10,6 +10,9 @@ resources:
 - ../../base/blog-ui
 - ../../base/monitoring
 
+patchesStrategicMerge:
+    - ingress-patch.yaml
+
 labels:
 - pairs:
     environment: dev

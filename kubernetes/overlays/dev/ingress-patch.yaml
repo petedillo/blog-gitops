@@ -2,20 +2,14 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: blog-api
-  namespace: dev
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
-    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
-    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+    nginx.ingress.kubernetes.io/custom-http-errors: "404,500,502,503"
 spec:
-  ingressClassName: nginx
   rules:
-  - host: dev.petedillo.com
+  - host: blog.dev.local
     http:
       paths:
-      # Admin UI routes (served by Spring MVC/Thymeleaf)
       - path: /manage
         pathType: Prefix
         backend:
@@ -23,8 +17,6 @@ spec:
             name: blog-api
             port:
               number: 8080
-
-      # Public API routes
       - path: /api/v1
         pathType: Prefix
         backend:
@@ -32,8 +24,6 @@ spec:
             name: blog-api
             port:
               number: 8080
-
-      # Health endpoint
       - path: /api/v1/health
         pathType: Prefix
         backend:
@@ -41,8 +31,6 @@ spec:
             name: blog-api
             port:
               number: 8080
-
-      # Media API (images served from /app/media)
       - path: /api/v1/media
         pathType: Prefix
         backend:
