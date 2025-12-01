@@ -11,12 +11,12 @@ resources:
 - ../../base/monitoring
 
 patches:
-    - path: ingress-patch.yaml
-        target:
-            group: networking.k8s.io
-            version: v1
-            kind: Ingress
-            name: blog-api
+  - path: ingress-patch.yaml
+    target:
+      group: networking.k8s.io
+      version: v1
+      kind: Ingress
+      name: blog-api
 
 labels:
 - pairs:
