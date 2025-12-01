@@ -6,6 +6,7 @@
 # Unsealed secrets (never commit!)
 *-unsealed.yaml
 *.secret
+admin-credentials-secret.yaml
 
 # macOS
 .DS_Store
