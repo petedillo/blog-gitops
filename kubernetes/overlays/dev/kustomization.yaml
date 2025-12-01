@@ -9,6 +9,7 @@ resources:
 - ../../base/blog-api
 - ../../base/blog-ui
 - ../../base/monitoring
+- ../../base/media-storage
 
 patches:
   - path: ingress-patch.yaml
