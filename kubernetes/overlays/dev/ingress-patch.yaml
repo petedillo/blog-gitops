@@ -7,7 +7,7 @@ metadata:
     nginx.ingress.kubernetes.io/custom-http-errors: "404,500,502,503"
 spec:
   rules:
-  - host: blog.dev.local
+  - host: dev.petedillo.com
     http:
       paths:
       - path: /manage
