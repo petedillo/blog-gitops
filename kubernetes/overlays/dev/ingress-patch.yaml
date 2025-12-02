@@ -10,6 +10,14 @@ spec:
   - host: dev.petedillo.com
     http:
       paths:
+      # Admin UI static assets - must come before /manage
+      - path: /admin
+        pathType: Prefix
+        backend:
+          service:
+            name: blog-api
+            port:
+              number: 8080
       - path: /manage
         pathType: Prefix
         backend:

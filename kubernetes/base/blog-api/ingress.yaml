@@ -7,12 +7,28 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
     nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+    # Preserve headers for Spring Security CSRF validation
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header X-Forwarded-Host $host;
+      proxy_set_header X-Forwarded-Server $host;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto $scheme;
+      proxy_set_header X-Real-IP $remote_addr;
 spec:
   ingressClassName: nginx
   rules:
   - host: dev.petedillo.com
     http:
       paths:
+      # Admin UI static assets (CSS, JS) - MUST come before /manage
+      - path: /admin
+        pathType: Prefix
+        backend:
+          service:
+            name: blog-api
+            port:
+              number: 8080
+
       # Admin UI routes (served by Spring MVC/Thymeleaf)
       - path: /manage
         pathType: Prefix

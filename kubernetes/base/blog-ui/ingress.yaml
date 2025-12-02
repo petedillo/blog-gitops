@@ -3,7 +3,6 @@ kind: Ingress
 metadata:
   name: blog-ui
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   ingressClassName: nginx
@@ -18,5 +17,5 @@ spec:
             name: blog-ui
             port:
               number: 80
-      # Note: API routes (/api/*) are handled by blog-api ingress
+      # Note: API routes (/api/*) and admin routes (/admin/*, /manage/*) are handled by blog-api ingress
       # NGINX ingress controller matches more specific paths first
