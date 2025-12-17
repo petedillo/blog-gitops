@@ -40,11 +40,18 @@ spec:
             secretKeyRef:
               name: postgres-credentials
               key: password
+        - name: BLOG_APP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: blog-app-credentials
+              key: password
         - name: PGDATA
           value: /var/lib/postgresql/data/pgdata
         volumeMounts:
         - name: postgres-storage
           mountPath: /var/lib/postgresql/data
+        - name: init-sql
+          mountPath: /docker-entrypoint-initdb.d
         resources:
           requests:
             memory: "256Mi"
@@ -72,3 +79,9 @@ spec:
       - name: postgres-storage
         persistentVolumeClaim:
           claimName: postgres-pvc
+      - name: init-sql
+        configMap:
+          name: postgres-init-sql
+          items:
+          - key: init.sql
+            path: init.sql

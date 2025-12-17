@@ -3,6 +3,10 @@ kind: Kustomization
 
 resources:
 - configmap.yaml
+- init-configmap.yaml
 - pvc.yaml
 - deployment.yaml
 - service.yaml
+
+# Sealed secrets are handled at overlay level
+# Base doesn't include secrets to avoid duplicating across environments

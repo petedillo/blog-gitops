@@ -10,7 +10,10 @@ resources:
 - ../../base/blog-ui
 - ../../base/monitoring
 - ../../base/media-storage
+- flyway-job.yaml
 - networkpolicy-postgres.yaml
+- ../sealed-secrets/dev/postgres-credentials.yaml
+- ../sealed-secrets/dev/blog-app-credentials.yaml
 
 patches:
   - path: ingress-patch.yaml
