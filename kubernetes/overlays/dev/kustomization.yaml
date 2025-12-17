@@ -10,6 +10,7 @@ resources:
 - ../../base/blog-ui
 - ../../base/monitoring
 - ../../base/media-storage
+- networkpolicy-postgres.yaml
 
 patches:
   - path: ingress-patch.yaml
