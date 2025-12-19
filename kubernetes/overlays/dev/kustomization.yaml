@@ -10,7 +10,6 @@ resources:
 - ../../base/blog-ui
 - ../../base/monitoring
 - ../../base/media-storage
-- flyway-job.yaml
 - networkpolicy-postgres.yaml
 - sealed-secrets/postgres-credentials.yaml
 - sealed-secrets/blog-app-credentials.yaml
