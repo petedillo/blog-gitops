@@ -22,6 +22,12 @@ patches:
       version: v1
       kind: Ingress
       name: blog-api
+  - path: ui-ingress-patch.yaml
+    target:
+      group: networking.k8s.io
+      version: v1
+      kind: Ingress
+      name: blog-ui
 
 labels:
 - pairs:

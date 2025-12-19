@@ -5,6 +5,8 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.ingress.kubernetes.io/custom-http-errors: "404,500,502,503"
+    # Restrict to local network and VPN only
+    nginx.ingress.kubernetes.io/whitelist-source-range: "192.168.50.0/24"
 spec:
   rules:
   - host: dev.petedillo.com
