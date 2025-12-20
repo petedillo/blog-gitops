@@ -14,6 +14,7 @@ resources:
 - sealed-secrets/blog-app-credentials.yaml
 - sealed-secrets/jwt-secret.yaml
 - sealed-secrets/cloudflare-cert.yaml
+- sealed-secrets/nexus-registry.yaml
 - media-pv-stage.yaml
 - media-pvc-stage.yaml
 

@@ -1,0 +1,14 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: nexus-registry
+  namespace: blog-stage
+spec:
+  encryptedData:
+    .dockerconfigjson: AgB/1VzA0AOf8hhJcMatddc4XdfebjYQNWFGLid/Ah9OwdZXHB06T0FgHCwYTgatMJJkbQCrvL342/5Ti/PX1ROk8YEGmaRA18tghVwhZ+1EEd+HPZkemMAElFRj3HcVzEERF2D0cak1+1M2g0C0ndfwnFHSdQ2IiN8bzHMFeeKmKKdHdZh6DQLKw3zQ8+A+iWMZpxNpWJLmAZCkqRRDv8wg/B1YOOGIYCg19KAL/ldBXwlDY7jwjcWO5+Yui8aI9iT7at6e76GRuntLoyn/JfCyjYHAdsoSkEnFKnlu64zCWaDzSjuwN4emKw6JaZUa5GLAt8daRmV03VCFpUv7gd1yCC/1nmcQZuv8yBgnatnOMco4ohi+NfIlt4ll+P+bp7AxFUV43OVB9JbddWZDWPrJLnPBqiSxoAEB9vI2N7hj5wZnTbujyduw8qZ4WghKimI4O+GBXZk9dHvSL0RXKs00iCf6rbOy0KXDXIOb30CuDLBJHqTyECtDdkFIyXwlVDFEMf1Orel4f8RH91H5B1iNx+ajXnqJHi998nse1fui7dA5bFz5bmh3wV036tmqt7xliAYhBl6Go6wS0Dc1TIM7yQGf2opacLC/t829LTcGuy5oTaAygiqpBuMMUGW3h2xyMr7Cu8de4ufi9Cn3Wt+tg6R1DR2R+LBLHqocTanr9Zw3mxfO1bTVB4ki7KdQqNqoLDy83GgmhpFdEofZevHlGvnE920cVjpX03wrhZMrcAJDxzJkDZzd1gKXm4TVxRFg7iQqYx1LcT16GyT11XKKg1jlsqYOiYmr2+0UO+4xQ6qxWiam+GfwgUD7i+bW+Yh6X4T1TAJyx7a2HhVKvSR1bSLDcD8yPlzHyz4Zjw==
+  template:
+    metadata:
+      name: nexus-registry
+      namespace: blog-stage
+    type: kubernetes.io/dockerconfigjson
