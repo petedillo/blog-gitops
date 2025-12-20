@@ -10,6 +10,7 @@ resources:
 - ../../base/blog-ui
 - ../../base/monitoring
 - networkpolicy-postgres.yaml
+- sealed-secrets/admin-credentials.yaml
 - sealed-secrets/postgres-credentials.yaml
 - sealed-secrets/blog-app-credentials.yaml
 - sealed-secrets/jwt-secret.yaml
