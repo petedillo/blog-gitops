@@ -12,7 +12,6 @@ resources:
 - networkpolicy-postgres.yaml
 - sealed-secrets/admin-credentials.yaml
 - sealed-secrets/postgres-credentials.yaml
-- sealed-secrets/blog-app-credentials.yaml
 - sealed-secrets/jwt-secret.yaml
 - sealed-secrets/cloudflare-cert.yaml
 - sealed-secrets/nexus-registry.yaml
