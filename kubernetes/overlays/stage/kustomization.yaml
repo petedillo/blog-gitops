@@ -9,12 +9,13 @@ resources:
 - ../../base/blog-api
 - ../../base/blog-ui
 - ../../base/monitoring
-- ../../base/media-storage
 - networkpolicy-postgres.yaml
 - sealed-secrets/postgres-credentials.yaml
 - sealed-secrets/blog-app-credentials.yaml
 - sealed-secrets/jwt-secret.yaml
 - sealed-secrets/cloudflare-cert.yaml
+- media-pv-stage.yaml
+- media-pvc-stage.yaml
 
 patches:
   - path: ingress-patch.yaml

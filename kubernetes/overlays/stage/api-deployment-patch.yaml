@@ -21,3 +21,7 @@ spec:
           value: "false"
         - name: OAUTH_APPLE_ENABLED
           value: "false"
+      volumes:
+      - name: media-storage
+        persistentVolumeClaim:
+          claimName: blog-media-pvc-stage
