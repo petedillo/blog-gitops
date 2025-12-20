@@ -4,8 +4,8 @@ metadata:
   name: blog-stage
   namespace: argocd
   annotations:
-    # ArgoCD Image Updater configuration - use develop-latest for API until stage-latest builds exist
-    argocd-image-updater.argoproj.io/image-list: blog-api=docker.toastedbytes.com/blog-api:develop-latest, blog-ui=docker.toastedbytes.com/blog-ui:stage-latest
+    # ArgoCD Image Updater configuration - track stage-latest tags for both API and UI
+    argocd-image-updater.argoproj.io/image-list: blog-api=docker.toastedbytes.com/blog-api:stage-latest, blog-ui=docker.toastedbytes.com/blog-ui:stage-latest
     argocd-image-updater.argoproj.io/blog-api.update-strategy: digest
     argocd-image-updater.argoproj.io/blog-ui.update-strategy: digest
     argocd-image-updater.argoproj.io/write-back-method: git
