@@ -1,0 +1,87 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: petedillo-stage
+  namespace: argocd
+spec:
+  description: PeteDillo.com staging environment
+
+  sourceRepos:
+  - 'https://github.com/petedillo/blog-gitops'
+
+  destinations:
+  - namespace: blog-stage
+    server: https://kubernetes.default.svc
+  - namespace: argocd
+    server: https://kubernetes.default.svc
+  - namespace: observability
+    server: https://kubernetes.default.svc
+
+  clusterResourceWhitelist:
+  - group: ''
+    kind: Namespace
+  - group: ''
+    kind: PersistentVolume
+
+  namespaceResourceWhitelist:
+  - group: '*'
+    kind: '*'
+
+  orphanedResources:
+    warn: true
+    ignore:
+    - group: apps
+      kind: Deployment
+      name: kube-prom-stack-*
+    - group: apps
+      kind: StatefulSet
+      name: alertmanager-*
+    - group: apps
+      kind: StatefulSet
+      name: prometheus-*
+    - group: apps
+      kind: StatefulSet
+      name: loki*
+    - group: apps
+      kind: StatefulSet
+      name: tempo*
+    - group: apps
+      kind: DaemonSet
+    - group: monitoring.coreos.com
+      kind: PrometheusRule
+      name: kube-prom-*
+    - group: monitoring.coreos.com
+      kind: ServiceMonitor
+    - group: ''
+      kind: Service
+      name: kube-prom-*
+    - group: ''
+      kind: Service
+      name: prometheus-*
+    - group: ''
+      kind: Service
+      name: alertmanager-*
+    - group: ''
+      kind: Service
+      name: loki*
+    - group: ''
+      kind: Service
+      name: tempo*
+    - group: ''
+      kind: ConfigMap
+      name: kube-prom-*
+    - group: rbac.authorization.k8s.io
+      kind: ClusterRole
+      name: kube-prom-*
+    - group: rbac.authorization.k8s.io
+      kind: ClusterRoleBinding
+      name: kube-prom-*
+    - group: rbac.authorization.k8s.io
+      kind: Role
+      name: kube-prom-*
+    - group: rbac.authorization.k8s.io
+      kind: RoleBinding
+      name: kube-prom-*
+    - group: ''
+      kind: ServiceAccount
+      name: kube-prom-*

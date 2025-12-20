@@ -1,20 +1,24 @@
-# Generate sealed secrets with kubeseal:
+# Generate sealed secrets with kubeseal (stage):
 #
-# 1. Generate JWT Secret:
+# 1) JWT secret
 #    echo -n "$(openssl rand -base64 48)" | kubectl create secret generic jwt-secret \
-#      --namespace=blog-stage \
-#      --dry-run=client \
-#      --from-file=JWT_SECRET=/dev/stdin \
-#      -o yaml | kubeseal -o yaml > jwt-secret.yaml
+#      --namespace=blog-stage --dry-run=client \
+#      --from-file=JWT_SECRET=/dev/stdin -o yaml | kubeseal -o yaml > jwt-secret.yaml
 #
-# 2. Generate Postgres Credentials:
+# 2) Postgres credentials
 #    kubectl create secret generic postgres-credentials \
-#      --namespace=blog-stage \
-#      --from-literal=password='CHANGE_ME' \
+#      --namespace=blog-stage --from-literal=password='CHANGE_ME' \
 #      --dry-run=client -o yaml | kubeseal -o yaml > postgres-credentials.yaml
 #
-# 3. Generate Blog App Credentials:
+# 3) Blog admin credentials
 #    kubectl create secret generic blog-app-credentials \
 #      --namespace=blog-stage \
-#      --from-literal=password='CHANGE_ME' \
+#      --from-literal=ADMIN_USERNAME='admin' \
+#      --from-literal=ADMIN_PASSWORD='CHANGE_ME' \
 #      --dry-run=client -o yaml | kubeseal -o yaml > blog-app-credentials.yaml
+#
+# 4) Cloudflare origin cert (PEM files on disk)
+#    kubectl create secret tls cloudflare-origin-cert \
+#      --namespace=blog-stage \
+#      --cert=/path/to/cert.pem --key=/path/to/key.pem \
+#      --dry-run=client -o yaml | kubeseal -o yaml > cloudflare-cert.yaml

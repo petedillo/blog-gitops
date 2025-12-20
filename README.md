@@ -50,5 +50,26 @@ Applications are deployed via ArgoCD:
 
 ## Environments
 
-- **dev**: Development environment (dev.petedillo.com)
-- **prod**: Production environment (petedillo.com)
+| Environment | Namespace | Domain | Access | Auto-Deploy | Status |
+|-------------|-----------|--------|--------|-------------|--------|
+| **Dev** | `blog-dev` | dev.petedillo.com | Private (VPN) | ✅ Auto | ✅ Active |
+| **Stage** | `blog-stage` | stage.petedillo.com | Public | ✅ Auto | 🚀 Ready |
+| **Prod** | `blog-prod` | petedillo.com | Public | ⚠️ Manual | 🚀 Ready |
+
+### Dev Environment
+- **Access**: Restricted to 192.168.50.0/24 (local network + VPN)
+- **Purpose**: Development and testing Sprint 3 changes
+- **Badge**: Shows "DEV" environment indicator
+
+### Stage Environment
+- **Access**: Public (for UAT and automated testing)
+- **Purpose**: Pre-production validation
+- **Badge**: Shows "STAGE" environment indicator
+- **Deploy Guide**: See [DEPLOY-STAGE-PROD.md](./DEPLOY-STAGE-PROD.md)
+
+### Production Environment
+- **Access**: Public
+- **Purpose**: Live production site
+- **Badge**: No environment indicator (clean UI)
+- **Sync**: Manual approval required
+- **Deploy Guide**: See [DEPLOY-STAGE-PROD.md](./DEPLOY-STAGE-PROD.md)

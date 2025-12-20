@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: blog-prod
+  namespace: argocd
+  annotations:
+    # ArgoCD Image Updater configuration - using prod-latest tag
+    argocd-image-updater.argoproj.io/image-list: blog-api=docker.toastedbytes.com/blog-api:prod-latest, blog-ui=docker.toastedbytes.com/blog-ui:prod-latest
+    argocd-image-updater.argoproj.io/blog-api.update-strategy: digest
+    argocd-image-updater.argoproj.io/blog-ui.update-strategy: digest
+    argocd-image-updater.argoproj.io/write-back-method: git
+    argocd-image-updater.argoproj.io/git-branch: main
+spec:
+  project: petedillo-prod
+
+  source:
+    repoURL: https://github.com/petedillo/blog-gitops
+    targetRevision: HEAD
+    path: kubernetes/overlays/prod
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: blog-prod
+
+  syncPolicy:
+    # Manual sync for production - requires approval
+    automated:
+      prune: false
+      selfHeal: false
+    syncOptions:
+    - CreateNamespace=true
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 5m
+
+  revisionHistoryLimit: 20

@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: blog-stage
+  namespace: argocd
+  annotations:
+    # ArgoCD Image Updater configuration - using stage-latest tag
+    argocd-image-updater.argoproj.io/image-list: blog-api=docker.toastedbytes.com/blog-api:stage-latest, blog-ui=docker.toastedbytes.com/blog-ui:stage-latest
+    argocd-image-updater.argoproj.io/blog-api.update-strategy: digest
+    argocd-image-updater.argoproj.io/blog-ui.update-strategy: digest
+    argocd-image-updater.argoproj.io/write-back-method: git
+    argocd-image-updater.argoproj.io/git-branch: main
+spec:
+  project: petedillo-stage
+
+  source:
+    repoURL: https://github.com/petedillo/blog-gitops
+    targetRevision: HEAD
+    path: kubernetes/overlays/stage
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: blog-stage
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+    syncOptions:
+    - CreateNamespace=true
+    - RespectIgnoreDifferences=false
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+
+  revisionHistoryLimit: 10

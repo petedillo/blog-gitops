@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: blog-ui
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    # Using Cloudflare origin certificate for end-to-end encryption
+    # Restrict to Cloudflare tunnel IP and internal K8s network
+    nginx.ingress.kubernetes.io/whitelist-source-range: "192.168.50.51/32,10.0.0.0/8"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - stage.petedillo.com
+    secretName: cloudflare-origin-cert
+  rules:
+  - host: stage.petedillo.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: blog-ui
+            port:
+              number: 80

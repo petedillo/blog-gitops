@@ -35,6 +35,24 @@ patches:
       version: v1
       kind: Deployment
       name: blog-api
+  - path: postgres-deployment-patch.yaml
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: postgres
+  - path: prometheus-rules-patch.yaml
+    target:
+      group: monitoring.coreos.com
+      version: v1
+      kind: PrometheusRule
+      name: blog-alerts
+  - path: grafana-ingress-patch.yaml
+    target:
+      group: networking.k8s.io
+      version: v1
+      kind: Ingress
+      name: grafana
 
 labels:
 - pairs:
