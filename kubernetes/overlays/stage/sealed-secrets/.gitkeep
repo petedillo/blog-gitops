@@ -1,0 +1,20 @@
+# Generate sealed secrets with kubeseal:
+#
+# 1. Generate JWT Secret:
+#    echo -n "$(openssl rand -base64 48)" | kubectl create secret generic jwt-secret \
+#      --namespace=blog-stage \
+#      --dry-run=client \
+#      --from-file=JWT_SECRET=/dev/stdin \
+#      -o yaml | kubeseal -o yaml > jwt-secret.yaml
+#
+# 2. Generate Postgres Credentials:
+#    kubectl create secret generic postgres-credentials \
+#      --namespace=blog-stage \
+#      --from-literal=password='CHANGE_ME' \
+#      --dry-run=client -o yaml | kubeseal -o yaml > postgres-credentials.yaml
+#
+# 3. Generate Blog App Credentials:
+#    kubectl create secret generic blog-app-credentials \
+#      --namespace=blog-stage \
+#      --from-literal=password='CHANGE_ME' \
+#      --dry-run=client -o yaml | kubeseal -o yaml > blog-app-credentials.yaml

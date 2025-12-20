@@ -1,0 +1,41 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: blog-stage
+
+resources:
+- namespace.yaml
+- ../../base/postgres
+- ../../base/blog-api
+- ../../base/blog-ui
+- ../../base/monitoring
+- ../../base/media-storage
+- networkpolicy-postgres.yaml
+- sealed-secrets/postgres-credentials.yaml
+- sealed-secrets/blog-app-credentials.yaml
+- sealed-secrets/jwt-secret.yaml
+- sealed-secrets/cloudflare-cert.yaml
+
+patches:
+  - path: ingress-patch.yaml
+    target:
+      group: networking.k8s.io
+      version: v1
+      kind: Ingress
+      name: blog-api
+  - path: ui-ingress-patch.yaml
+    target:
+      group: networking.k8s.io
+      version: v1
+      kind: Ingress
+      name: blog-ui
+  - path: api-deployment-patch.yaml
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: blog-api
+
+labels:
+- pairs:
+    environment: stage
