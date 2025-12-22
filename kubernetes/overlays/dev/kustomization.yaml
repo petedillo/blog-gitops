@@ -11,8 +11,11 @@ resources:
 - ../../base/monitoring
 - ../../base/media-storage
 - networkpolicy-postgres.yaml
+- sealed-secrets/jwt-secret.yaml
 - sealed-secrets/postgres-credentials.yaml
 - sealed-secrets/blog-app-credentials.yaml
+- sealed-secrets/admin-credentials.yaml
+- sealed-secrets/nexus-registry.yaml
 
 patches:
   - path: ingress-patch.yaml
