@@ -1,4 +1,4 @@
 kustomize:
   images:
-  - docker.toastedbytes.com/blog-api@sha256:dbbb7346dd5e05daa50f68be06374db5359cdb996843a33340159a2f51e281fc
+  - docker.toastedbytes.com/blog-api@sha256:078e2c5e825ce33fd080258d6d34b14373d3bad9230c75b8299c71aee363695c
   - docker.toastedbytes.com/blog-ui@sha256:e0df365fdc94ce359f8817823037a2e90e92a35e4ac2c64098cc14cd43f91d73
