@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blog-api
+spec:
+  template:
+    spec:
+      containers:
+      - name: blog-api
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "dev"

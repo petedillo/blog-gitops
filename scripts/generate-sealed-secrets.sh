@@ -43,17 +43,35 @@ kubectl create secret generic postgres-credentials \
   -o yaml | kubeseal -o yaml > "${OVERLAY_PATH}/postgres-credentials.yaml"
 echo -e "${GREEN}✓${NC} Postgres credentials sealed"
 
-# 3. Generate Admin App Credentials
-echo -e "${YELLOW}[3/3]${NC} Generating Admin App Credentials..."
+#############################################
+# 3. Generate Admin API Credentials (for API)
+#############################################
+echo -e "${YELLOW}[3/5]${NC} Generating Admin API Credentials (admin-credentials)..."
 ADMIN_USER="admin"
-ADMIN_PASS=$(openssl rand -base64 32)
-kubectl create secret generic blog-app-credentials \
+ADMIN_PASS=$(openssl rand -base64 24)
+kubectl create secret generic admin-credentials \
   --namespace="${NAMESPACE}" \
   --from-literal=ADMIN_USERNAME="${ADMIN_USER}" \
   --from-literal=ADMIN_PASSWORD="${ADMIN_PASS}" \
   --dry-run=client \
+  -o yaml | kubeseal -o yaml > "${OVERLAY_PATH}/admin-credentials.yaml"
+echo -e "${GREEN}✓${NC} Admin API credentials sealed"
+
+#########################################################
+# 4. Generate Blog App DB Password (for role: blog_app)
+#########################################################
+echo -e "${YELLOW}[4/5]${NC} Generating Blog App DB Password (blog-app-credentials)..."
+BLOG_APP_PASS=$(openssl rand -base64 24)
+kubectl create secret generic blog-app-credentials \
+  --namespace="${NAMESPACE}" \
+  --from-literal=password="${BLOG_APP_PASS}" \
+  --dry-run=client \
   -o yaml | kubeseal -o yaml > "${OVERLAY_PATH}/blog-app-credentials.yaml"
-echo -e "${GREEN}✓${NC} Admin credentials sealed"
+echo -e "${GREEN}✓${NC} Blog app DB password sealed"
+
+#############################################
+# 5. Summary
+#############################################
 
 echo ""
 echo -e "${GREEN}✅ All sealed secrets generated successfully!${NC}"
@@ -61,14 +79,16 @@ echo ""
 echo "📋 Generated Files:"
 echo "  - ${OVERLAY_PATH}/jwt-secret.yaml"
 echo "  - ${OVERLAY_PATH}/postgres-credentials.yaml"
+echo "  - ${OVERLAY_PATH}/admin-credentials.yaml"
 echo "  - ${OVERLAY_PATH}/blog-app-credentials.yaml"
 echo ""
 echo "⚠️  IMPORTANT - Save these credentials securely:"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "JWT_SECRET: ${JWT_SECRET}"
 echo "POSTGRES_PASSWORD: ${POSTGRES_PASS}"
-echo "ADMIN_USERNAME: ${ADMIN_USER}"
-echo "ADMIN_PASSWORD: ${ADMIN_PASS}"
+echo "ADMIN_USERNAME (API): ${ADMIN_USER}"
+echo "ADMIN_PASSWORD (API): ${ADMIN_PASS}"
+echo "BLOG_APP_PASSWORD (DB role): ${BLOG_APP_PASS}"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 echo "✅ These sealed secrets are encrypted and safe to commit to Git"

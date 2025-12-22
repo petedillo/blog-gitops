@@ -18,6 +18,12 @@ resources:
 - sealed-secrets/nexus-registry.yaml
 
 patches:
+  - path: deployment-patch.yaml
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: blog-api
   - path: ingress-patch.yaml
     target:
       group: networking.k8s.io
