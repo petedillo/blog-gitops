@@ -37,3 +37,18 @@ patches:
       version: v1
       kind: Deployment
       name: postgres
+  - path: blog-ui-service-patch.yaml
+    target:
+      version: v1
+      kind: Service
+      name: blog-ui
+  - path: blog-api-service-patch.yaml
+    target:
+      version: v1
+      kind: Service
+      name: blog-api
+  - path: postgres-service-patch.yaml
+    target:
+      version: v1
+      kind: Service
+      name: postgres
