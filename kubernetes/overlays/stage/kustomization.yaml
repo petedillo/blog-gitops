@@ -37,7 +37,3 @@ patches:
       version: v1
       kind: Deployment
       name: postgres
-
-labels:
-  - pairs:
-      environment: stage
