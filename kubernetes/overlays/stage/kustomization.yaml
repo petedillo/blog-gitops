@@ -39,6 +39,5 @@ patches:
       name: postgres
 
 labels:
-  - includeSelectors: true
-    pairs:
+  - pairs:
       environment: stage

@@ -32,6 +32,5 @@ patches:
       name: blog-ui
 
 labels:
-  - includeSelectors: true
-    pairs:
+  - pairs:
       environment: dev
