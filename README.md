@@ -2,6 +2,25 @@
 
 Infrastructure as Code for PeteDillo blog platform using GitOps principles with ArgoCD and Kubernetes.
 
+## Repository Structure (Post-Migration)
+
+This repository contains **application workload manifests only**.
+
+### What's Managed Here:
+- Kubernetes manifests for blog-api, blog-ui, postgres
+- Environment-specific overlays (dev, stage)
+- Application-specific configurations
+
+### What's Managed in homelab/infra/gitops:
+- ArgoCD Application and AppProject definitions
+- SealedSecrets (cluster-level secret management)
+- Observability (Prometheus, Grafana)
+- ArgoCD Image Updater configuration
+
+### Repository Dependencies:
+- **Homelab Repo**: https://github.com/petedillo/homelab (control plane)
+- **This Repo**: https://github.com/petedillo/blog-gitops (workloads)
+
 ## Quick Links
 
 - [Environment Setup Guide](./docs/ENVIRONMENT-SETUP.md) - Complete setup for dev/stage/prod

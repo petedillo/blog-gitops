@@ -4,19 +4,13 @@ kind: Kustomization
 namespace: blog-stage
 
 resources:
-- namespace.yaml
-- ../../base/postgres
-- ../../base/blog-api
-- ../../base/blog-ui
-- ../../base/monitoring
-- networkpolicy-postgres.yaml
-- sealed-secrets/admin-credentials.yaml
-- sealed-secrets/postgres-credentials.yaml
-- sealed-secrets/jwt-secret.yaml
-- sealed-secrets/cloudflare-cert.yaml
-- sealed-secrets/nexus-registry.yaml
-- media-pv-stage.yaml
-- media-pvc-stage.yaml
+  - namespace.yaml
+  - ../../base/postgres
+  - ../../base/blog-api
+  - ../../base/blog-ui
+  - networkpolicy-postgres.yaml
+  - media-pv-stage.yaml
+  - media-pvc-stage.yaml
 
 patches:
   - path: ingress-patch.yaml
@@ -43,19 +37,8 @@ patches:
       version: v1
       kind: Deployment
       name: postgres
-  - path: prometheus-rules-patch.yaml
-    target:
-      group: monitoring.coreos.com
-      version: v1
-      kind: PrometheusRule
-      name: blog-alerts
-  - path: grafana-ingress-patch.yaml
-    target:
-      group: networking.k8s.io
-      version: v1
-      kind: Ingress
-      name: grafana
 
 labels:
-- pairs:
-    environment: stage
+  - includeSelectors: true
+    pairs:
+      environment: stage
