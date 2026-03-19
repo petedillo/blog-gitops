@@ -2,12 +2,10 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: blog-ui
-  annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
-  ingressClassName: nginx
+  ingressClassName: public
   rules:
-  - host: dev.petedillo.com
+  - host: blog.homelab.local
     http:
       paths:
       - path: /
@@ -17,5 +15,3 @@ spec:
             name: blog-ui
             port:
               number: 80
-      # Note: API routes (/api/*) and admin routes (/admin/*, /manage/*) are handled by blog-api ingress
-      # NGINX ingress controller matches more specific paths first

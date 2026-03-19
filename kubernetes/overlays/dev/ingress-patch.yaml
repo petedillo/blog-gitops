@@ -2,44 +2,6 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: blog-api
-  annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/custom-http-errors: "404,500,502,503"
-    # Restrict to local network, VPN, and internal K8s traffic
-    # 192.168.50.0/24 = Local network + VPN
-    # 10.0.0.0/8 = Internal K8s pod network
-    nginx.ingress.kubernetes.io/whitelist-source-range: "192.168.50.0/24,10.0.0.0/8"
 spec:
   rules:
-  - host: dev.petedillo.com
-    http:
-      paths:
-      # Admin UI static assets
-      - path: /admin
-        pathType: Prefix
-        backend:
-          service:
-            name: blog-api
-            port:
-              number: 8080
-      - path: /api/v1
-        pathType: Prefix
-        backend:
-          service:
-            name: blog-api
-            port:
-              number: 8080
-      - path: /api/v1/health
-        pathType: Prefix
-        backend:
-          service:
-            name: blog-api
-            port:
-              number: 8080
-      - path: /api/v1/media
-        pathType: Prefix
-        backend:
-          service:
-            name: blog-api
-            port:
-              number: 8080
+  - host: blog.homelab.local

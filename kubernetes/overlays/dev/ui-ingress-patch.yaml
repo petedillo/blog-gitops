@@ -2,8 +2,6 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: blog-ui
-  annotations:
-    # Restrict to local network, VPN, and internal K8s traffic
-    # 192.168.50.0/24 = Local network + VPN
-    # 10.0.0.0/8 = Internal K8s pod network
-    nginx.ingress.kubernetes.io/whitelist-source-range: "192.168.50.0/24,10.0.0.0/8"
+spec:
+  rules:
+  - host: blog.homelab.local

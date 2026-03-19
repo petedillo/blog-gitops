@@ -8,7 +8,6 @@ resources:
   - ../../base/postgres
   - ../../base/blog-api
   - ../../base/blog-ui
-  - ../../base/media-storage
   - networkpolicy-postgres.yaml
 
 patches:
