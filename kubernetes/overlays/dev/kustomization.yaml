@@ -18,18 +18,6 @@ patches:
       version: v1
       kind: Deployment
       name: blog-api
-  - path: ingress-patch.yaml
-    target:
-      group: networking.k8s.io
-      version: v1
-      kind: Ingress
-      name: blog-api
-  - path: ui-ingress-patch.yaml
-    target:
-      group: networking.k8s.io
-      version: v1
-      kind: Ingress
-      name: blog-ui
   - path: blog-ui-service-patch.yaml
     target:
       version: v1
