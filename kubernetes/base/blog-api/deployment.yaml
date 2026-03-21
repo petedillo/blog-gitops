@@ -34,11 +34,11 @@ spec:
         - name: DB_NAME
           value: "petedillo_blog"
         - name: DB_USERNAME
-          value: "blog_app"
+          value: "petedillo"
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: blog-app-credentials
+              name: postgres-credentials
               key: password
         resources:
           requests:
