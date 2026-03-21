@@ -10,4 +10,4 @@ spec:
         image: docker.toastedbytes.com/blog-api@sha256:2259903b39e054168e3003deb9bfdf4e0d229d977c9dd51a0c17743630e7062d
         env:
         - name: SPRING_PROFILES_ACTIVE
-          value: "prod"
+          value: "dev"
