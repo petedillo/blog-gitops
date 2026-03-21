@@ -4,22 +4,23 @@ Infrastructure as Code for PeteDillo blog platform using GitOps principles with 
 
 ## Repository Structure (Post-Migration)
 
-This repository contains **application workload manifests only**.
+This directory contains **blog workload manifests only**.
 
 ### What's Managed Here:
 - Kubernetes manifests for blog-api, blog-ui, postgres
-- Environment-specific overlays (dev, stage)
+- Environment-specific overlays (`dev`, `prod`)
 - Application-specific configurations
 
-### What's Managed in homelab/infra/gitops:
+### What's Managed in `gitops/` within the monorepo:
 - ArgoCD Application and AppProject definitions
 - SealedSecrets (cluster-level secret management)
 - Observability (Prometheus, Grafana)
 - ArgoCD Image Updater configuration
 
 ### Repository Dependencies:
-- **Homelab Repo**: https://github.com/petedillo/homelab (control plane)
-- **This Repo**: https://github.com/petedillo/blog-gitops (workloads)
+- **Monorepo**: https://github.com/PeteDio-Labs/petedio-labs-gitops
+- **Control Plane Path**: `gitops/`
+- **This Directory Path**: `blog-gitops/`
 
 ## Quick Links
 
@@ -36,14 +37,13 @@ ArgoCD (Continuous Delivery)
    ↓
 Kubernetes Cluster (k3s)
    ├── blog-dev (namespace)
-   └── blog-stage (namespace)
+   └── blog-prod (namespace)
 
 Docker Images:
   Nexus Registry (docker.toastedbytes.com)
-    ├── blog-api:dev-latest
-    ├── blog-api:stage-latest
-    ├── blog-ui:dev-latest
-    └── blog-ui:stage-latest
+    ├── blog-api (digest pinned per overlay)
+    ├── blog-ui (digest pinned per overlay)
+    └── blog-agent (digest pinned in dev)
 ```
 
 ## Repository Structure
@@ -53,7 +53,7 @@ blog-gitops/
 ├── argocd/
 │   ├── applications/          # ArgoCD Application manifests
 │   │   ├── blog-dev.yaml      # Dev environment
-│   │   ├── blog-stage.yaml    # Stage environment
+│   │   ├── blog-prod.yaml     # Production environment
 │   │   └── argocd-image-updater.yaml
 │   └── projects/              # ArgoCD Project definitions
 │
@@ -74,21 +74,19 @@ blog-gitops/
 │       │   │   ├── blog-app-credentials.yaml
 │       │   │   ├── admin-credentials.yaml
 │       │   │   └── nexus-registry.yaml
-│       │   ├── kustomization.yaml
-│       │   ├── ingress-patch.yaml
-│       │   └── ui-ingress-patch.yaml
+│       │   ├── .argocd-source-blog-dev.yaml
+│       │   ├── blog-api-ingress.yaml
+│       │   ├── blog-ui-ingress.yaml
+│       │   ├── blog-agent-configmap-patch.yaml
+│       │   └── kustomization.yaml
 │       │
-│       └── stage/             # Staging environment
+│       └── prod/              # Production environment
 │           ├── sealed-secrets/
-│           │   ├── jwt-secret.yaml
-│           │   ├── postgres-credentials.yaml
-│           │   ├── blog-app-credentials.yaml
-│           │   ├── admin-credentials.yaml
-│           │   ├── nexus-registry.yaml
-│           │   └── cloudflare-cert.yaml
-│           ├── kustomization.yaml
-│           ├── ingress-patch.yaml
-│           └── ui-ingress-patch.yaml
+│           ├── blog-ui-deployment-patch.yaml
+│           ├── blog-api-service-patch.yaml
+│           ├── blog-ui-service-patch.yaml
+│           ├── deployment-patch.yaml
+│           └── kustomization.yaml
 │
 ├── scripts/
 │   └── generate-sealed-secrets.sh  # Generate encrypted secrets
@@ -105,32 +103,24 @@ blog-gitops/
 | Environment | Namespace | Domain | Auto-Sync | Image Updater | Status |
 |-------------|-----------|--------|-----------|---------------|--------|
 | Dev | blog-dev | dev.petedillo.com | ✅ Yes | ❌ No | ✅ Active |
-| Stage | blog-stage | stage.petedillo.com | ✅ Yes | ✅ Yes (`stage-latest`) | ✅ Active |
-| Prod | blog-prod | petedillo.com | ❌ Manual | ❌ No | 📋 Planned |
+| Prod | blog-prod | petedillo.com | ❌ Manual | ❌ No | ⚙️ Configured |
 
 ### Dev Environment
 
-- **Access:** Private (VPN/Tailscale) or direct ingress
+- **Access:** `https://dev.petedillo.com` through Cloudflare Tunnel → public cluster ingress
 - **Purpose:** Development and testing
 - **Auto-Deploy:** Yes (ArgoCD auto-sync on git changes)
-- **Image Tag:** `dev-latest` (manual updates)
+- **Routing:** `/` → `blog-ui`, `/api/v1` and `/admin` → `blog-api`
+- **Image Updates:** Manual digest updates via `.argocd-source-blog-dev.yaml`
 - **Secrets:** 5 sealed secrets (jwt, postgres, blog-app, admin, nexus-registry)
 
-### Stage Environment
-
-- **Access:** Public (stage.petedillo.com)
-- **Purpose:** Pre-production validation and UAT
-- **Auto-Deploy:** Yes (ArgoCD Image Updater tracks `stage-latest`)
-- **Image Tag:** `stage-latest` (auto-updated)
-- **Secrets:** 6 sealed secrets (includes cloudflare-cert for TLS)
-
-### Production Environment (Planned)
+### Production Environment
 
 - **Access:** Public (petedillo.com)
 - **Purpose:** Live production site
 - **Auto-Deploy:** No (manual sync required)
 - **Image Tag:** Versioned tags (e.g., v1.2.3)
-- **Secrets:** Unique prod secrets with higher security
+- **Secrets:** Dedicated prod sealed secrets and registry credentials
 
 See [docs/ENVIRONMENT-SETUP.md](./docs/ENVIRONMENT-SETUP.md) for production setup instructions when ready to deploy.
 
@@ -169,24 +159,13 @@ kubectl get pods -n blog-dev
 curl https://dev.petedillo.com/api/v1/health
 ```
 
-### Deploy to Stage
+### Dev Routing Notes
 
-```bash
-# 1. Generate stage sealed secrets
-./scripts/generate-sealed-secrets.sh stage
+The dev overlay now owns explicit ingress resources:
 
-# 2. Commit and push
-git add kubernetes/overlays/stage/sealed-secrets/
-git commit -m "Generate stage sealed secrets"
-git push
-
-# 3. Sync via ArgoCD
-kubectl patch application blog-stage -n argocd --type merge -p '{"operation":{"sync":{"revision":"HEAD"}}}'
-
-# 4. Verify deployment
-kubectl get pods -n blog-stage
-curl https://stage.petedillo.com/api/v1/health
-```
+- `kubernetes/overlays/dev/blog-ui-ingress.yaml` routes `https://dev.petedillo.com/` to `blog-ui`
+- `kubernetes/overlays/dev/blog-api-ingress.yaml` routes `https://dev.petedillo.com/api/v1` and `/admin` to `blog-api`
+- The Cloudflare tunnel points `dev.petedillo.com` at the cluster ingress address, not the standalone UI service IP
 
 ## Secret Management
 
@@ -236,14 +215,6 @@ See [SEALED-SECRETS-DEPLOYMENT.md](./SEALED-SECRETS-DEPLOYMENT.md) for detailed 
 5. ArgoCD auto-syncs to dev namespace
 6. Pods restart with new image
 
-### Stage Workflow (Automated)
-
-1. Push image tagged `stage-latest` to Nexus registry
-2. ArgoCD Image Updater detects new digest (polls every 2 minutes)
-3. Image Updater commits new digest to git
-4. ArgoCD auto-syncs to stage namespace
-5. Zero-downtime rolling update
-
 ### Production Workflow (Manual - Planned)
 
 1. Tag release (e.g., `v1.2.3`)
@@ -265,61 +236,30 @@ See [SEALED-SECRETS-DEPLOYMENT.md](./SEALED-SECRETS-DEPLOYMENT.md) for detailed 
 
 ### Environment Overlays
 
-Each overlay (dev/stage) customizes:
+Each overlay (`dev`/`prod`) customizes:
 
 - **Sealed secrets** - Encrypted credentials specific to environment
-- **Domain names** - dev.petedillo.com vs stage.petedillo.com
-- **Resource limits** - Higher in stage/prod
-- **Replicas** - More replicas in stage/prod
+- **Domain names** - `dev.petedillo.com` vs `petedillo.com`
+- **Resource limits** - Higher in production
+- **Replicas** - More replicas in production
 - **Network policies** - Stricter isolation in prod
-- **Ingress configuration** - TLS certificates, annotations
+- **Ingress configuration** - Dev uses explicit ingress manifests; prod stays overlay-driven
 
 ## ArgoCD Applications
 
 ### blog-dev
 
-- **Repository:** https://github.com/petedillo/blog-gitops
-- **Path:** kubernetes/overlays/dev
+- **Repository:** https://github.com/PeteDio-Labs/petedio-labs-gitops
+- **Path:** blog-gitops/kubernetes/overlays/dev
 - **Sync:** Automated (prune + self-heal enabled)
 - **Image Updater:** Disabled (manual image updates)
 
-### blog-stage
+### blog-prod
 
-- **Repository:** https://github.com/petedillo/blog-gitops
-- **Path:** kubernetes/overlays/stage
-- **Sync:** Automated (prune + self-heal enabled)
-- **Image Updater:** Enabled (tracks `stage-latest` tag)
-
-### blog-prod (Planned)
-
-- **Repository:** https://github.com/petedillo/blog-gitops
-- **Path:** kubernetes/overlays/prod
+- **Repository:** https://github.com/PeteDio-Labs/petedio-labs-gitops
+- **Path:** blog-gitops/kubernetes/overlays/prod
 - **Sync:** Manual only (no auto-sync or self-heal)
 - **Image Updater:** Disabled (versioned tags only)
-
-## Automated Image Updates (Stage Only)
-
-ArgoCD Image Updater automatically deploys new `stage-latest` images:
-
-### How It Works
-
-1. CI/CD pushes `stage-latest` image to Nexus
-2. Image Updater polls registry every 2 minutes
-3. Detects new image digest
-4. Commits update to `.argocd-source-blog-stage.yaml`
-5. ArgoCD syncs updated image to cluster
-
-### Configuration
-
-Annotations in `argocd/applications/blog-stage.yaml`:
-
-```yaml
-argocd-image-updater.argoproj.io/image-list: |
-  blog-api=docker.toastedbytes.com/blog-api:stage-latest
-  blog-ui=docker.toastedbytes.com/blog-ui:stage-latest
-argocd-image-updater.argoproj.io/blog-api.update-strategy: digest
-argocd-image-updater.argoproj.io/blog-ui.update-strategy: digest
-```
 
 ## Common Operations
 
@@ -384,9 +324,6 @@ kubectl describe pod <pod-name> -n blog-dev | grep -A 5 "Requests"
 # Sync dev environment
 kubectl patch application blog-dev -n argocd --type merge -p '{"operation":{"sync":{"revision":"HEAD"}}}'
 
-# Sync stage environment
-kubectl patch application blog-stage -n argocd --type merge -p '{"operation":{"sync":{"revision":"HEAD"}}}'
-
 # Check sync result
 kubectl get application blog-dev -n argocd
 ```
@@ -433,9 +370,6 @@ kubectl port-forward -n blog-dev svc/prometheus 9090:9090
 ```bash
 # API health
 curl https://dev.petedillo.com/api/v1/health
-
-# Stage health
-curl https://stage.petedillo.com/api/v1/health
 
 # From within cluster
 kubectl run curl-test --image=curlimages/curl -i --rm --restart=Never -- \
@@ -493,13 +427,13 @@ kubectl run curl-test --image=curlimages/curl -i --rm --restart=Never -- \
 3. Test in dev environment
 4. Create PR for review
 5. Merge to `main` after approval
-6. ArgoCD auto-syncs to dev and stage
+6. ArgoCD auto-syncs to dev
 
 ## Related Repositories
 
 - **blog-api** - Spring Boot REST API backend
 - **blog-ui** - React frontend application
-- **blog-gitops** - This repository (infrastructure)
+- **petedio-labs-gitops** - Monorepo containing this `blog-gitops/` workload directory
 
 ## License
 
