@@ -1,0 +1,10 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blog-ui
+spec:
+  template:
+    spec:
+      containers:
+      - name: blog-ui
+        image: docker.toastedbytes.com/blog-ui:main-latest

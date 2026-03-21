@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blog-api
+spec:
+  template:
+    spec:
+      containers:
+      - name: blog-api
+        image: docker.toastedbytes.com/blog-api:main-latest
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "prod"
