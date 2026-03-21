@@ -8,5 +8,5 @@ spec:
       containers:
       - name: blog-api
         env:
-        - name: SPRING_PROFILES_ACTIVE
+        - name: APP_ENVIRONMENT
           value: "dev"

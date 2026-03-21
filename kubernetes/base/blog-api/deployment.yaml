@@ -25,50 +25,47 @@ spec:
         - containerPort: 8080
           name: http
         env:
-        - name: SPRING_PROFILES_ACTIVE
+        - name: APP_ENVIRONMENT
           value: "develop"
-        - name: SPRING_DATASOURCE_URL
-          value: "jdbc:postgresql://postgres:5432/petedillo_blog"
-        - name: SPRING_DATASOURCE_USERNAME
-          value: "petedillo"
+        - name: DB_HOST
+          value: "postgres"
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_NAME
+          value: "petedillo_blog"
+        - name: DB_USERNAME
+          value: "blog_app"
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: postgres-credentials
-              key: password
-        - name: SPRING_DATASOURCE_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: postgres-credentials
+              name: blog-app-credentials
               key: password
         resources:
           requests:
-            memory: "512Mi"
-            cpu: "250m"
+            memory: "128Mi"
+            cpu: "100m"
           limits:
-            memory: "1Gi"
-            cpu: "1000m"
+            memory: "256Mi"
+            cpu: "500m"
         startupProbe:
           httpGet:
-            path: /actuator/health/liveness
+            path: /health/live
             port: 8080
           initialDelaySeconds: 5
-          periodSeconds: 10
-          timeoutSeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
           failureThreshold: 12
         livenessProbe:
           httpGet:
-            path: /actuator/health/liveness
+            path: /health/live
             port: 8080
-          initialDelaySeconds: 60
           periodSeconds: 10
-          timeoutSeconds: 5
+          timeoutSeconds: 3
           failureThreshold: 3
         readinessProbe:
           httpGet:
-            path: /actuator/health/readiness
+            path: /health/ready
             port: 8080
-          initialDelaySeconds: 30
           periodSeconds: 5
           timeoutSeconds: 3
           failureThreshold: 3
