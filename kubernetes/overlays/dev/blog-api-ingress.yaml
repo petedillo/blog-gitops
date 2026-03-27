@@ -8,13 +8,6 @@ spec:
   - host: dev.petedillo.com
     http:
       paths:
-      - path: /admin
-        pathType: Prefix
-        backend:
-          service:
-            name: blog-api
-            port:
-              number: 8080
       - path: /api/v1
         pathType: Prefix
         backend:

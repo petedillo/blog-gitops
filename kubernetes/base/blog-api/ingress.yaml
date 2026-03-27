@@ -8,15 +8,7 @@ spec:
   - host: blog.homelab.local
     http:
       paths:
-      # Admin API routes (consumed by blog-agent/automation)
-      - path: /admin
-        pathType: Prefix
-        backend:
-          service:
-            name: blog-api
-            port:
-              number: 8080
-      # Public API routes
+      # API routes (includes /api/v1/admin/* for blog-agent/automation)
       - path: /api/v1
         pathType: Prefix
         backend:
