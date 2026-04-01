@@ -7,4 +7,5 @@ spec:
     spec:
       containers:
       - name: blog-ui
-        image: docker.toastedbytes.com/blog-ui@sha256:613929a564d06994a52d76124dfae220e203659dd5d9fa41234ffcd6fca7ce47
+        image: docker.toastedbytes.com/blog-ui:latest
+        imagePullPolicy: Always

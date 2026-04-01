@@ -7,6 +7,8 @@ spec:
     spec:
       containers:
       - name: blog-api
+        image: docker.toastedbytes.com/blog-api:latest
+        imagePullPolicy: Always
         env:
         - name: APP_ENVIRONMENT
           value: "prod"
