@@ -220,8 +220,8 @@ kubectl create secret generic postgres-credentials \
 ```bash
 # 1. Deploy via ArgoCD
 argocd app create blog-prod \
-  --repo https://github.com/pedrodelgadillo/blog-gitops.git \
-  --path kubernetes/overlays/prod \
+  --repo https://github.com/PeteDio-Labs/petedio-labs-gitops.git \
+  --path blog-gitops/kubernetes/overlays/prod \
   --dest-server https://kubernetes.default.svc \
   --dest-namespace prod \
   --sync-policy automated

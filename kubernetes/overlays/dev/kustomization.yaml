@@ -12,6 +12,7 @@ resources:
   - blog-ui-ingress.yaml
   - ../../base/blog-agent
   - networkpolicy-postgres.yaml
+  - network-policies.yaml
 
 patches:
   - path: deployment-patch.yaml

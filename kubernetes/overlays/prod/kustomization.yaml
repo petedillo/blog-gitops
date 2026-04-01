@@ -12,6 +12,7 @@ resources:
   - sealed-secrets/postgres-credentials.yaml
   - sealed-secrets/blog-app-credentials.yaml
   - sealed-secrets/nexus-registry.yaml
+  - network-policies.yaml
 
 patches:
   - path: deployment-patch.yaml
