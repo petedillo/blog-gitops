@@ -5,6 +5,7 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/configuration-snippet: |
       allow 192.168.50.0/24;
+      allow 10.100.0.0/24;
       deny all;
 spec:
   ingressClassName: public
