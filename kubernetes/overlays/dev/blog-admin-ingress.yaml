@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: blog-admin
+  annotations:
+    nginx.ingress.kubernetes.io/whitelist-source-range: "192.168.50.0/24"
+spec:
+  ingressClassName: public
+  rules:
+  - host: dev.petedillo.com
+    http:
+      paths:
+      - path: /admin/
+        pathType: Prefix
+        backend:
+          service:
+            name: blog-ui
+            port:
+              number: 80
+      - path: /api/v1/admin/
+        pathType: Prefix
+        backend:
+          service:
+            name: blog-ui
+            port:
+              number: 80

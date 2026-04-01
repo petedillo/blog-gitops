@@ -10,6 +10,7 @@ resources:
   - blog-api-ingress.yaml
   - ../../base/blog-ui
   - blog-ui-ingress.yaml
+  - blog-admin-ingress.yaml
   - ../../base/blog-agent
   - networkpolicy-postgres.yaml
   - network-policies.yaml
