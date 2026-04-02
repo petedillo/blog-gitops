@@ -34,6 +34,8 @@ spec:
         envFrom:
         - configMapRef:
             name: blog-agent-config
+        - secretRef:
+            name: blog-agent-image-secrets
         resources:
           requests:
             cpu: 100m
