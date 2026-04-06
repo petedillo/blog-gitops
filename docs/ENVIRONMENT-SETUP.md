@@ -73,7 +73,7 @@ The dev environment needs 5 sealed secrets:
 **Option 1: Use the script (generates all 5 secrets)**
 
 ```bash
-cd /path/to/petedio-labs-gitops/blog-gitops
+cd /path/to/petedio-labs-infrastructure/kubernetes/blog-gitops
 
 # Generate all dev sealed secrets
 ./scripts/generate-sealed-secrets.sh dev
@@ -633,7 +633,7 @@ kubectl get application blog-dev -n argocd -o jsonpath='{.status.conditions}' | 
 kubectl get application blog-dev -n argocd -o jsonpath='{.status.operationState.message}'
 
 # Verify kustomize builds locally
-cd /path/to/petedio-labs-gitops/blog-gitops
+cd /path/to/petedio-labs-infrastructure/kubernetes/blog-gitops
 kubectl kustomize kubernetes/overlays/dev
 ```
 

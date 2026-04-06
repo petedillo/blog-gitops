@@ -680,7 +680,7 @@ kubectl create secret docker-registry nexus-registry \
 
 ## Related Documentation
 
-- [Environment Setup Guide](./docs/ENVIRONMENT-SETUP.md) - Complete environment setup
-- [Network Policies](./docs/network-policies.md) - Network isolation
+- [Environment Setup Guide](./knowledge/ENVIRONMENT-SETUP.md) - Complete environment setup
+- [Network Policies](./knowledge/network-policies.md) - Network isolation
 - [Bitnami Sealed Secrets GitHub](https://github.com/bitnami-labs/sealed-secrets) - Official documentation
 

@@ -11,7 +11,7 @@ This directory contains **blog workload manifests only**.
 - Environment-specific overlays (`dev`, `prod`)
 - Application-specific configurations
 
-### What's Managed in `gitops/` within the monorepo:
+### What's Managed in `infrastructure/kubernetes/` within the monorepo:
 - ArgoCD Application and AppProject definitions
 - SealedSecrets (cluster-level secret management)
 - Observability (Prometheus, Grafana)
@@ -19,14 +19,14 @@ This directory contains **blog workload manifests only**.
 
 ### Repository Dependencies:
 - **Monorepo**: https://github.com/PeteDio-Labs/petedio-labs-gitops
-- **Control Plane Path**: `gitops/`
-- **This Directory Path**: `blog-gitops/`
+- **Control Plane Path**: `infrastructure/kubernetes/`
+- **This Directory Path**: `blog-infrastructure/kubernetes/`
 
 ## Quick Links
 
-- [Environment Setup Guide](./docs/ENVIRONMENT-SETUP.md) - Complete setup for dev/stage/prod
+- [Environment Setup Guide](./knowledge/ENVIRONMENT-SETUP.md) - Complete setup for dev/stage/prod
 - [Sealed Secrets Guide](./SEALED-SECRETS-DEPLOYMENT.md) - Secret management and troubleshooting
-- [Network Policies](./docs/network-policies.md) - Network isolation configuration
+- [Network Policies](./knowledge/network-policies.md) - Network isolation configuration
 
 ## Architecture
 
@@ -49,7 +49,7 @@ Docker Images:
 ## Repository Structure
 
 ```
-blog-gitops/
+blog-infrastructure/kubernetes/
 ├── argocd/
 │   ├── applications/          # ArgoCD Application manifests
 │   │   ├── blog-dev.yaml      # Dev environment
@@ -91,7 +91,7 @@ blog-gitops/
 ├── scripts/
 │   └── generate-sealed-secrets.sh  # Generate encrypted secrets
 │
-├── docs/
+├── knowledge/
 │   ├── ENVIRONMENT-SETUP.md   # Complete setup guide
 │   └── network-policies.md    # Network security docs
 │
@@ -122,7 +122,7 @@ blog-gitops/
 - **Image Tag:** Versioned tags (e.g., v1.2.3)
 - **Secrets:** Dedicated prod sealed secrets and registry credentials
 
-See [docs/ENVIRONMENT-SETUP.md](./docs/ENVIRONMENT-SETUP.md) for production setup instructions when ready to deploy.
+See [knowledge/ENVIRONMENT-SETUP.md](./knowledge/ENVIRONMENT-SETUP.md) for production setup instructions when ready to deploy.
 
 ## Quick Start
 
@@ -250,14 +250,14 @@ Each overlay (`dev`/`prod`) customizes:
 ### blog-dev
 
 - **Repository:** https://github.com/PeteDio-Labs/petedio-labs-gitops
-- **Path:** blog-gitops/kubernetes/overlays/dev
+- **Path:** blog-infrastructure/kubernetes/kubernetes/overlays/dev
 - **Sync:** Automated (prune + self-heal enabled)
 - **Image Updater:** Disabled (manual image updates)
 
 ### blog-prod
 
 - **Repository:** https://github.com/PeteDio-Labs/petedio-labs-gitops
-- **Path:** blog-gitops/kubernetes/overlays/prod
+- **Path:** blog-infrastructure/kubernetes/kubernetes/overlays/prod
 - **Sync:** Manual only (no auto-sync or self-heal)
 - **Image Updater:** Disabled (versioned tags only)
 
@@ -398,7 +398,7 @@ kubectl run curl-test --image=curlimages/curl -i --rm --restart=Never -- \
 - Verify `postgres-credentials` secret exists
 - Check postgres pod is running
 - Ensure secret is mounted in API deployment
-- See [docs/ENVIRONMENT-SETUP.md](./docs/ENVIRONMENT-SETUP.md#database-connection-failures)
+- See [knowledge/ENVIRONMENT-SETUP.md](./knowledge/ENVIRONMENT-SETUP.md#database-connection-failures)
 
 **SealedSecret not decrypting**
 - Check sealed-secrets controller logs
@@ -410,11 +410,11 @@ kubectl run curl-test --image=curlimages/curl -i --rm --restart=Never -- \
 - Check application conditions for errors
 - Verify kustomize builds locally
 - Look for manifest generation errors
-- See [docs/ENVIRONMENT-SETUP.md](./docs/ENVIRONMENT-SETUP.md#argocd-wont-sync)
+- See [knowledge/ENVIRONMENT-SETUP.md](./knowledge/ENVIRONMENT-SETUP.md#argocd-wont-sync)
 
 ### Get Help
 
-1. Check [docs/ENVIRONMENT-SETUP.md](./docs/ENVIRONMENT-SETUP.md) for detailed setup instructions
+1. Check [knowledge/ENVIRONMENT-SETUP.md](./knowledge/ENVIRONMENT-SETUP.md) for detailed setup instructions
 2. Review [SEALED-SECRETS-DEPLOYMENT.md](./SEALED-SECRETS-DEPLOYMENT.md) for secret troubleshooting
 3. Check sealed-secrets controller logs: `kubectl logs -n kube-system -l name=sealed-secrets-controller`
 4. Check ArgoCD application status: `kubectl describe application blog-dev -n argocd`
@@ -433,7 +433,7 @@ kubectl run curl-test --image=curlimages/curl -i --rm --restart=Never -- \
 
 - **blog-api** - Spring Boot REST API backend
 - **blog-ui** - React frontend application
-- **petedio-labs-gitops** - Monorepo containing this `blog-gitops/` workload directory
+- **petedio-labs-gitops** - Monorepo containing this `blog-infrastructure/kubernetes/` workload directory
 
 ## License
 

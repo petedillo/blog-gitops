@@ -195,7 +195,7 @@ kubectl -n argocd get secret argocd-initial-admin-secret \
 
 # 4. Install monitoring stack
 kubectl create namespace monitoring
-kubectl apply -f blog-gitops/kubernetes/base/monitoring/
+kubectl apply -f blog-infrastructure/kubernetes/kubernetes/base/monitoring/
 ```
 
 ##### Phase 3: Restore Secrets (3 minutes)
@@ -221,7 +221,7 @@ kubectl create secret generic postgres-credentials \
 # 1. Deploy via ArgoCD
 argocd app create blog-prod \
   --repo https://github.com/PeteDio-Labs/petedio-labs-gitops.git \
-  --path blog-gitops/kubernetes/overlays/prod \
+  --path blog-infrastructure/kubernetes/kubernetes/overlays/prod \
   --dest-server https://kubernetes.default.svc \
   --dest-namespace prod \
   --sync-policy automated
