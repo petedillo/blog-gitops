@@ -89,4 +89,4 @@ spec:
             matchLabels:
               app: blog-agent
       ports:
-        - port: 3000
+        - port: 8080
