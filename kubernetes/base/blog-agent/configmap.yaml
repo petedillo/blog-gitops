@@ -5,7 +5,7 @@ metadata:
 data:
   # Ollama LLM provider
   OLLAMA_BASE_URL: "http://192.168.50.59:11434"
-  OLLAMA_MODEL: "gemma4"
+  OLLAMA_MODEL: "gemma4:e4b"
 
   # Internal service URLs (K8s DNS)
   BLOG_API_URL: "http://blog-api:8080"
