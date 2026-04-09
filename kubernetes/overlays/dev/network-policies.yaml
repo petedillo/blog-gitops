@@ -117,6 +117,25 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
+  name: allow-mc-backend-to-agent
+spec:
+  podSelector:
+    matchLabels:
+      app: blog-agent
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: mission-control
+          podSelector:
+            matchLabels:
+              app: mission-control-backend
+      ports:
+        - port: 3004
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
   name: allow-agent-egress
 spec:
   podSelector:
