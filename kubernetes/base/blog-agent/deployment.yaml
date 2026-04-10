@@ -5,8 +5,8 @@ metadata:
   labels:
     app: blog-agent
 spec:
-  replicas: 1
-  revisionHistoryLimit: 3
+  replicas: 0
+  revisionHistoryLimit: 2
   selector:
     matchLabels:
       app: blog-agent
