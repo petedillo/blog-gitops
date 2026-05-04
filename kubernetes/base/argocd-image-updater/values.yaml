@@ -1,8 +1,8 @@
 config:
   registries:
     - name: Nexus Docker Registry
-      prefix: docker.toastedbytes.com
-      api_url: https://docker.toastedbytes.com
+      prefix: docker.pdlab.dev
+      api_url: https://docker.pdlab.dev
       credentials: secret:argocd/nexus-registry-creds#creds
       default: true
 

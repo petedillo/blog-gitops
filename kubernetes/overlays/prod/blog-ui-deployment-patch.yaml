@@ -7,5 +7,5 @@ spec:
     spec:
       containers:
       - name: blog-ui
-        image: docker.toastedbytes.com/blog-ui:develop-latest
+        image: docker.pdlab.dev/blog-ui:develop-latest
         imagePullPolicy: Always

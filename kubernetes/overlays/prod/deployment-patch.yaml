@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
       - name: blog-api
-        image: docker.toastedbytes.com/blog-api:develop-latest
+        image: docker.pdlab.dev/blog-api:develop-latest
         imagePullPolicy: Always
         env:
         - name: APP_ENVIRONMENT
