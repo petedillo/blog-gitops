@@ -4,8 +4,8 @@ metadata:
   name: blog-agent-config
 data:
   BLOG_URL: "https://blog.pdlab.dev"
-  CORS_ORIGINS: "https://dev.petedillo.com,https://blog.pdlab.dev,http://localhost:5173"
+  CORS_ORIGINS: "https://blog.pdlab.dev,http://localhost:5173"
   MC_BACKEND_URL: "http://mission-control-backend.mission-control.svc.cluster.local:3000"
   MINIO_ENDPOINT: "http://192.168.50.115:9000"
   MINIO_BUCKET: "blog-images"
-  MINIO_PUBLIC_URL: "https://media.petedillo.com"
+  MINIO_PUBLIC_URL: "https://media.pdlab.dev"
