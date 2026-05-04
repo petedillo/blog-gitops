@@ -3,8 +3,8 @@ kind: ConfigMap
 metadata:
   name: blog-agent-config
 data:
-  BLOG_URL: "https://dev.petedillo.com"
-  CORS_ORIGINS: "https://dev.petedillo.com,http://localhost:5173"
+  BLOG_URL: "https://blog.pdlab.dev"
+  CORS_ORIGINS: "https://dev.petedillo.com,https://blog.pdlab.dev,http://localhost:5173"
   MC_BACKEND_URL: "http://mission-control-backend.mission-control.svc.cluster.local:3000"
   MINIO_ENDPOINT: "http://192.168.50.115:9000"
   MINIO_BUCKET: "blog-images"
