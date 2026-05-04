@@ -8,17 +8,6 @@ metadata:
 spec:
   ingressClassName: public
   rules:
-  - host: argocd.toastedbytes.com
-    http:
-      paths:
-      - backend:
-          service:
-            name: argocd-server
-            port:
-              number: 80
-        path: /
-        pathType: Prefix
-  # pdlab.dev mirror (dual-domain soak — remove argocd.toastedbytes.com block after cutover)
   - host: argocd.pdlab.dev
     http:
       paths:
