@@ -2,4 +2,4 @@ kustomize:
   images:
   - docker.pdlab.dev/blog-api@sha256:b0665822bb427763425501775fcd3ff30efc3384f03fc728d4ef715203f65358
   - docker.pdlab.dev/blog-ui@sha256:ac515aa38f29eb4fe43c7bafc482fd4fe440f5ed114fa44dd98be84a84b394a2
-  - docker.pdlab.dev/blog-agent@sha256:4c057eea3d69d561da25d2d5c8eb5547f314721c655414f2a932f5967a2a0b57
+  - docker.pdlab.dev/blog-agent@sha256:6a7255dcc67d1bfbd65f85780b0fbd50fa8e7f2c0042b7143a83f45ed6d13ee0
