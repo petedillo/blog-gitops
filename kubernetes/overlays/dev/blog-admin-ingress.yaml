@@ -10,7 +10,9 @@ metadata:
 spec:
   ingressClassName: public
   rules:
-  - host: dev.petedillo.com
+  # LAN-only admin access (192.168.50.0/24 allow-list above gates by IP).
+  # Add `192.168.50.61 blog-admin.homelab.local` to /etc/hosts to use this.
+  - host: blog-admin.homelab.local
     http:
       paths:
       - path: /admin/
